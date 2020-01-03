@@ -1,5 +1,5 @@
 import { Controller, Get, Inject } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientProxy, EventPattern } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 import { ECHO_SERVICE } from './app.constants';
 
@@ -12,5 +12,10 @@ export class AppController {
     const pattern = { cmd: 'echo' };
     const data = "hello from event-test";
     return this.client.send<string>(pattern, data);
+  }
+
+  @EventPattern('endpoint_hit')
+  async handleUserCreated(data: string) {
+    console.log("Endpoint Hit with message: "+ data);
   }
 }
